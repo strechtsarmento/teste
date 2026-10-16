@@ -1,0 +1,73 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedInAndVerified() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email is string;
+    }
+
+    function licensePath(code) {
+      return /databases/$(database)/documents/chaves/$(code);
+    }
+
+    function activeLicense(code) {
+      return signedInAndVerified()
+        && code is string
+        && exists(licensePath(code))
+        && get(licensePath(code)).data.status == 'ativo'
+        && get(licensePath(code)).data.email == request.auth.token.email;
+    }
+
+    function validProfile(uid) {
+      return request.resource.data.keys().hasAll(['uid', 'email', 'licenseCode'])
+        && request.resource.data.keys().hasOnly([
+          'uid', 'email', 'licenseCode', 'progresso', 'blocoAtual',
+          'cicloAtivo', 'createdAt', 'updatedAt'
+        ])
+        && request.resource.data.uid == uid
+        && request.resource.data.email == request.auth.token.email
+        && activeLicense(request.resource.data.licenseCode);
+    }
+
+    match /chaves/{licenseCode} {
+      // A signed-in, verified account can check only its own email-bound license.
+      allow get: if signedInAndVerified()
+        && resource.data.email == request.auth.token.email;
+      allow list, create, update, delete: if false;
+    }
+
+    match /users/{uid} {
+      // Allow the owner to read only their own profile, including to detect a first login.
+      allow get: if signedInAndVerified() && request.auth.uid == uid;
+      allow list: if false;
+      allow create: if signedInAndVerified()
+        && request.auth.uid == uid
+        && validProfile(uid);
+      allow update: if signedInAndVerified()
+        && request.auth.uid == uid
+        && resource.data.uid == uid
+        && request.resource.data.uid == resource.data.uid
+        && request.resource.data.email == resource.data.email
+        && request.resource.data.licenseCode == resource.data.licenseCode
+        && activeLicense(resource.data.licenseCode)
+        && request.resource.data.keys().hasOnly([
+          'uid', 'email', 'licenseCode', 'progresso', 'blocoAtual',
+          'cicloAtivo', 'createdAt', 'updatedAt'
+        ]);
+      allow delete: if false;
+    }
+
+    match /exercicios/{exerciseId} {
+      allow read: if signedInAndVerified()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && activeLicense(get(/databases/$(database)/documents/users/$(request.auth.uid)).data.licenseCode);
+      allow write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

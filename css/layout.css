@@ -1,0 +1,10 @@
+.wrapper { display: grid; grid-template-columns: 2.8fr 1.2fr; width: 99%; max-width: 1500px; height: 98%; gap: 15px; margin: 10px auto; }
+.app, .cicloBox { background: white; border-radius: 15px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); overflow-y: auto; display: flex; flex-direction: column; }
+
+.view { display: none; height: calc(100vh - 50px); overflow-y: auto; position: absolute; width: 100%; top: 50px; left: 0; background: var(--bg); }
+.view.active { display: block; z-index: 1; }
+#view-ajuda { height: 100vh; overflow-y: auto; padding-bottom: 50px; }
+
+.tooltip-container { position: relative; display: inline-block; cursor: help; }
+.tooltip-data { visibility: hidden; width: 360px; background: #fff; color: #333; border-radius: 12px; padding: 15px; position: absolute; z-index: 2000; top: 35px; left: 0; box-shadow: 0 10px 40px rgba(0,0,0,0.3); border: 1px solid var(--secondary); opacity: 0; transition: 0.3s; pointer-events: none; font-weight: normal; }
+.tooltip-container:hover .tooltip-data { visibility: visible; opacity: 1; }

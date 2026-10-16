@@ -1,0 +1,16 @@
+@media (max-width: 900px) {
+    nav { overflow-x: auto; padding: 0 10px; }
+    .nav-link { white-space: nowrap; padding: 8px 10px; }
+    .wrapper { grid-template-columns: 1fr; height: auto; }
+    .app, .cicloBox { min-height: 420px; }
+    .simulado-container { flex-direction: column; }
+    #sidebar-ex { width: 100%; max-height: 220px; }
+    #main-ex { padding: 18px; }
+}
+
+@media (max-width: 600px) {
+    .lista { grid-template-columns: 1fr; }
+    .tooltip-data { width: min(320px, 85vw); }
+    .input-chave-premium, .btn-ativar-premium { width: min(320px, 86vw); }
+    .splash-logo { width: min(360px, 85vw); }
+}

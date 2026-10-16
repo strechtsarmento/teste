@@ -1,0 +1,13 @@
+.help-container { max-width: 850px; margin: 30px auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+.help-menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 30px; }
+.help-btn { background: #f8f9fa; border: 2px solid #eee; padding: 15px; border-radius: 12px; cursor: pointer; font-weight: bold; color: var(--secondary); transition: 0.3s; text-align: center; font-size: 13px; }
+.help-btn:hover { border-color: var(--secondary); background: #eef2ff; }
+.help-btn.active { background: var(--secondary); color: white; border-color: var(--secondary); }
+.help-content { display: none; padding: 25px; border: 1px solid #eee; border-radius: 15px; background: #fff; line-height: 1.7; border-left: 5px solid var(--secondary); }
+.help-content.active { display: block; animation: fadeInHelp 0.4s ease-out; }
+@keyframes fadeInHelp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+#loginBox button { padding: 12px; border: none; border-radius: 10px; background: #ffea00; cursor: pointer; font-weight: bold; transition: 0.2s; }
+#loginBox button:hover { transform: scale(1.03); }
+.modal-content { animation: modalOpen 0.2s ease; }
+@keyframes modalOpen { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }

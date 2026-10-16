@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0047bb"><meta name="description" content="Painel de estudos responsivo para o concurso do Banco do Brasil.">
+<link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./css/base.css"><link rel="stylesheet" href="./css/navigation.css"><link rel="stylesheet" href="./css/layout.css"><link rel="stylesheet" href="./css/components.css"><link rel="stylesheet" href="./css/exercises.css"><link rel="stylesheet" href="./css/help.css"><link rel="stylesheet" href="./css/responsive.css"><link rel="stylesheet" href="./css/web.css">
+<title>Master Dashboard BB — Estudos</title>
+</head><body>
+<section id="auth-shell" class="auth-shell" aria-labelledby="auth-title"><div class="auth-card"><div class="brand-mark" aria-hidden="true">BB</div><p class="eyebrow">MASTER DASHBOARD</p><h1 id="auth-title">Seus estudos, em qualquer tela</h1><p class="auth-subtitle">Entre ou crie uma conta para sincronizar seu progresso.</p>
+<label for="auth-email">E-mail</label><input id="auth-email" type="email" autocomplete="email" required placeholder="voce@exemplo.com">
+<label for="auth-password">Senha</label><input id="auth-password" type="password" autocomplete="current-password" minlength="8" required placeholder="Pelo menos 8 caracteres">
+<label for="auth-license">Código de licença <span>(necessário na primeira ativação)</span></label><input id="auth-license" type="text" autocomplete="off" spellcheck="false" placeholder="MSTR-XXXX-XXXX">
+<div class="auth-actions"><button id="btn-sign-in" class="primary-button">Entrar</button><button id="btn-create-account" class="secondary-button">Criar conta</button></div>
+<button id="btn-continue-session" class="text-button">Ativar ou tentar novamente</button><button id="btn-reset-password" class="text-button">Esqueci minha senha</button><button id="btn-resend-verification" class="text-button" hidden>Reenviar confirmação de e-mail</button>
+<p id="auth-message" class="auth-message" role="status" aria-live="polite" hidden></p><p class="auth-footnote">O acesso exige e-mail confirmado e licença ativa. Para instalar, use o menu do navegador.</p>
+</div></section>
+<main id="app-shell" hidden><nav class="navbar" aria-label="Navegação principal">
+<button class="nav-link active" onclick="switchView('view-estudos',this)">Painel de Estudos</button>
+<button class="nav-link" id="nav-ex-tab" onclick="switchView('view-exercicios',this)">Banco de Exercícios</button>
+<button class="nav-link" onclick="switchView('view-ajuda',this)">Ajuda</button>
+<div class="nav-right"><details class="options-menu"><summary class="nav-link">Opções</summary><div class="dropdown-content"><button onclick="exportarProgresso()" class="dropdown-item btn-export">Baixar backup</button><button onclick="document.getElementById('importFileNav').click()" class="dropdown-item btn-import">Carregar backup</button><input type="file" id="importFileNav" accept=".json" onchange="importarProgresso(event)"><button onclick="resetTotal()" class="dropdown-item btn-reset">Limpar progresso</button></div></details></div>
+<div class="account-controls"><span id="account-email"></span><small id="sync-status">Progresso sincronizado</small><button id="btn-install-app" class="install-button" hidden>Instalar app</button><button id="btn-sign-out" class="sign-out-button">Sair</button></div>
+</nav>
+<div id="view-estudos" class="view active">
+    <div class="wrapper">
+        <div class="app" style="padding-top: 25px !important;">
+
+            <div class="progress-container">
+                <div id="progress" style="width: 0%;"></div>
+            </div>
+
+            <span id="dashboard-progress-text">Você já viu 0% do conteúdo</span>
+
+            <div id="conteudo"></div>
+        </div>
+
+        <div class="cicloBox">
+            <h3 style="color: var(--secondary)">Ciclo Estratégico</h3>
+            <button class="btn-cycle" onclick="gerarNovoBloco()">Gerar Bloco Ponderado</button>
+            <div id="cicloLista"></div>
+        </div>
+    </div>
+</div>
+
+<div id="view-ajuda" class="view" style="display:none;">
+<div class="help-container"><h2 style="color:var(--secondary);text-align:center">Central de ajuda</h2><p style="text-align:center;color:#666">Informações da versão web</p>
+<div class="help-menu"><button class="help-btn active" onclick="showHelp(1,this)">1. Estudos e ciclos</button><button class="help-btn" onclick="showHelp(2,this)">2. Conta e sincronização</button><button class="help-btn" onclick="showHelp(3,this)">3. Backup</button><button class="help-btn" onclick="showHelp(4,this)">4. Licença</button><button class="help-btn" onclick="showHelp(5,this)">5. Apagar progresso</button></div>
+<div id="h-content-1" class="help-content active"><h3>Estudos e ciclos</h3><p>O painel organiza as matérias, marca temas estudados, acompanha revisões e permite gerar blocos de estudo. Use o banco de exercícios para praticar por disciplina.</p></div>
+<div id="h-content-2" class="help-content" style="display:none"><h3>Conta e sincronização</h3><p>O acesso usa uma conta Firebase com e-mail confirmado. Seu progresso sincroniza com o Firestore quando há conexão. Uma cópia também fica neste navegador. Saia da conta em dispositivos compartilhados.</p></div>
+<div id="h-content-3" class="help-content" style="display:none"><h3>Backup</h3><p>Em Opções, baixe uma cópia JSON do progresso ou carregue um backup existente. Guarde o arquivo em local seguro.</p></div>
+<div id="h-content-4" class="help-content" style="display:none"><h3>Licença e acesso</h3><p>Use o e-mail associado à licença e informe o código de licença ao ativar a conta. Se a licença estiver inativa ou vinculada a outro e-mail, fale com o administrador.</p></div>
+<div id="h-content-5" class="help-content" style="display:none"><h3>Apagar progresso</h3><p>“Limpar Tudo” apaga as marcações e o ciclo da conta. Baixe um backup antes de usar essa opção.</p></div>
+</div></div>
+<div id="view-exercicios" class="view">
+    <div class="simulado-container">
+        <div id="sidebar-ex">
+            <h3 style="margin-top:0">Disciplinas</h3>
+            <div id="exercise-nav-list">
+                <p style="color:#888; font-size:13px;">Carregando disciplinas...</p>
+            </div>
+        </div>
+
+        <div id="main-ex">
+            <div class="subject-section active">
+                <h2>Banco de Exercicios</h2>
+                <p style="color:#888;">Carregando exercicios do Firebase...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </main><script type="module" src="./js/app.js"></script></body></html>
