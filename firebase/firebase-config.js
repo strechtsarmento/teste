@@ -4,15 +4,14 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebas
 
 // Replace these placeholders with the Firebase web app settings for the dedicated Web project.
 // These client settings are public by design; never put a service-account key here.
-export const firebaseConfig = {
-  apiKey: "CONFIGURE_FIREBASE_WEB_API_KEY",
-  authDomain: "CONFIGURE_FIREBASE_AUTH_DOMAIN",
-  projectId: "CONFIGURE_FIREBASE_PROJECT_ID",
-  storageBucket: "CONFIGURE_FIREBASE_STORAGE_BUCKET",
-  messagingSenderId: "CONFIGURE_FIREBASE_MESSAGING_SENDER_ID",
-  appId: "CONFIGURE_FIREBASE_APP_ID"
+const firebaseConfig = {
+  apiKey: "AIzaSyA3Duv6qD2DY6vuYhv84xy8iTMo2aJpUtA",
+  authDomain: "master-dashboard-bb.firebaseapp.com",
+  projectId: "master-dashboard-bb",
+  storageBucket: "master-dashboard-bb.firebasestorage.app",
+  messagingSenderId: "639331293700",
+  appId: "1:639331293700:web:17f7adc5dcee8b00e47351"
 };
-
 export const firebaseConfigured = Object.values(firebaseConfig).every(
   (value) => value && !value.startsWith("CONFIGURE_")
 );
